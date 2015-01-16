@@ -2,6 +2,7 @@ FROM debian
 
 MAINTAINER ahiknsr
 #Adding kali sources
+RUN cat /etc/apt/sources.list
 RUN apt-get install wget -y --force-yes
 RUN wget --no-check-certificate https://gist.githubusercontent.com/Ahiknsr/701f2896b642930ce2e8/raw/868e1e465e3f3498420db89e6eca1679537e2f57/dockerinitialsetup -O aptsetup.sh 
 RUN chmod +x aptsetup.sh; bash aptsetup.sh

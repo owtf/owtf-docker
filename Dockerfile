@@ -1,5 +1,6 @@
 FROM debian
 
+RUN apt-get update && apt-get upgrade -y --force-yes
 MAINTAINER ahiknsr
 #Adding kali sources
 RUN apt-cache search wget

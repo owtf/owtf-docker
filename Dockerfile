@@ -33,7 +33,7 @@ RUN python owtf/install/install.py
 RUN wget  https://gist.githubusercontent.com/Ahiknsr/957d204e6d965db08b06/raw/a4ab25a9ab56da7536e02d9c8ffd9de8931c01ad/owtfdbinstall -O owtf/scripts/owtfinstall.sh 
 RUN chmod +x owtf/scripts/owtfinstall.sh 
 RUN bash owtf/scripts/owtfinstall.sh
-RUN wget https://gist.githubusercontent.com/Ahiknsr/31ce4c694767d59ef35b/raw/61d1a0edcfc932b42e6306e23788e2b9b8ea25c2/dbmodify -O dbmodify.py
+RUN wget https://gist.githubusercontent.com/Ahiknsr/31ce4c694767d59ef35b/raw/8bce404a8653abe48eb3db09d29061f04c1c90e1/dbmodify -O dbmodify.py
 RUN python dbmodify.py
 RUN wget https://gist.githubusercontent.com/Ahiknsr/e600b0e4e51865a6dfa0/raw/094d296e1cd5c0947064606b1cadffab7aa3c3f7/modifiedserver.py -O owtf/framework/interface/server.py
 

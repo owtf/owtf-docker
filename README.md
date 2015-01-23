@@ -1,7 +1,7 @@
 Instructions to build your OWTF Docker image:
 ===
 
-1. Install **Docker**.(specific instructions can be found [here](https://docs.docker.com/installation/) .
+1. Install **Docker**.(specific instructions can be found [here](https://docs.docker.com/installation/)).
 
 2. Run `docker build -t <yourpreferredname> <path to Dockerfile>`.
 

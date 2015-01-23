@@ -1,13 +1,15 @@
+Instructions to build your OWTF Docker image:
+===
 
-Instructions to install owtf in docker container .
+1. Install **Docker**.(specific instructions can be found [here](https://docs.docker.com/installation/) .
 
-1)Fisrt install docker , Instructions can be found here(https://docs.docker.com/installation/) 
+2. Run `docker build -t <yourpreferredname> <path to Dockerfile>`.
 
-2)Then install owtf using docker pull  ahiknsr/owtfdocker64
+3. You can launch your **OWTF** container by running `docker -itd -p 8009:8009 <image name>`.
+   - `-d` launches the container as a *daemon*.
+   - `-p 8009:8009` maps the port 8009 of the host machine to the port 8009 of the container. (syntax: `<host port>:<container port>`)
+   - Get the image name by running `docker images`.
 
-3)After installing run docker run -i -t ahiknsr/owtfdocker64 /bin/bash to get a interactive shell 
+4. To get a shell inside a running container (as *daemon*), run `docker -it exec /bin/bash <containerid>`. Get the container id by running `docker ps -a`.
 
-4)get the ip of the container using ifconfig
-
-5)Run python owtf/owtf.py , use can now use owtf's web interface on port 8009 on the container 
-
+5. Inside the container, run `python owtf/owtf.py` to start **OWTF**. Once the web interface has been initialised successfully, point your browser to `<hostip>:8009`.

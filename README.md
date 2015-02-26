@@ -10,6 +10,6 @@ Instructions to build your OWTF Docker image:
    - `-p 8009:8009` maps the port 8009 of the host machine to the port 8009 of the container. (syntax: `<host port>:<container port>`)
    - Get the image name by running `docker images`.
 
-4. To get a shell inside a running container (as *daemon*), run `docker -it exec /bin/bash <containerid>`. Get the container id by running `docker ps -a`.
+4. To get a shell inside a running container (as *daemon*), run `docker exec -it <containerid> /bin/bash`. Get the container id by running `docker ps -a`.
 
 5. Inside the container, run `python owtf/owtf.py` to start **OWTF**. Once the web interface has been initialised successfully, point your browser to `<hostip>:8009`.

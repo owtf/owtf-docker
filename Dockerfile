@@ -12,7 +12,7 @@ COPY owtf.pip /
 COPY optional_tools.sh /
 
 RUN ["sh", "packages.sh"]
-RUN ["pip", "install -r", "owtf.pip"]
+RUN ["pip", "install", "-r", "owtf.pip"]
 
 RUN pip install --upgrade six simplejson pyOpenSSL==0.12
 RUN pip install --upgrade -r owtf.pip

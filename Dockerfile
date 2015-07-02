@@ -12,6 +12,11 @@ COPY owtf.pip /
 COPY optional_tools.sh /
 
 RUN ["sh", "packages.sh"]
+
+#upgrade pip before upgrading other packages using pip
+RUN pip install --upgrade pip
+RUN rm -rf /usr/lib/python2.7/dist-packages/setuptools.egg-info
+
 RUN ["pip", "install", "-r", "owtf.pip"]
 
 RUN pip install --upgrade six simplejson pyOpenSSL==0.12

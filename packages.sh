@@ -1,5 +1,6 @@
 apt-get install -y  sudo \
-                    git \
+                    git \ 
+                    python-setuptools \
                     python-pip \
                     xvfb \
                     xserver-xephyr \

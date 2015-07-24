@@ -5,7 +5,7 @@ MAINTAINER delta24
 RUN apt-get update && apt-get upgrade -y
 
 #Kali SSL lib-fix
-ENV PYCURL_SSL_LIBRARY gnutls
+ENV PYCURL_SSL_LIBRARY openssl
 
 COPY packages.sh /
 RUN ["sh", "packages.sh"]

@@ -13,6 +13,7 @@ COPY optional_tools.sh /
 COPY pip-fixes.sh /
 
 RUN ["sh", "packages.sh"]
+RUN ["pip", "install", "--upgrade", "pip"]
 RUN ["pip", "install", "--upgrade", "-r", "owtf.pip"]
 
 #download latest OWTF

@@ -11,7 +11,6 @@ COPY packages.sh /
 RUN ["sh", "packages.sh"]
 
 COPY owtf.pip /
-COPY optional_tools.sh /
 RUN ["pip", "install", "--upgrade", "pip"]
 RUN ["pip", "install", "--upgrade", "-r", "owtf.pip"]
 
@@ -25,22 +24,25 @@ RUN ["python", "owtf/install/install.py"]
 ###################
 COPY modified/db_setup.sh owtf/scripts/db_setup.sh
 COPY modified/owtfdbinstall.sh owtf/scripts/
-RUN ["/bin/bash", "owtf/scripts/owtfdbinstall.sh"]
+RUN chmod +x owtf/scripts/owtfdbinstall.sh
 ###################
 COPY modified/dbmodify.py owtf/scripts/
-RUN ["python", "owtf/scripts/dbmodify.py"]
 ###################
 COPY modified/interface_server.py owtf/framework/interface/
 RUN ["mv", "-f", "owtf/framework/interface/interface_server.py", "owtf/framework/interface/server.py"]
-
-#optional tools for OWTF
-RUN ["/bin/sh", "optional_tools.sh"]
-
-#cert-fix
-RUN mkdir /.owtf ; cp -r /root/.owtf/* /.owtf/
 
 EXPOSE 8009 8008
 
 # cleanup
 RUN rm packages.sh owtf.pip
-CMD ["python", "owtf/owtf.py"]
+
+COPY optional_tools.sh /usr/bin/
+RUN chmod +x /usr/bin/optional_tools.sh
+
+#set entrypoint
+COPY owtf_entry.sh /usr/bin/
+RUN chmod +x /usr/bin/owtf_entry.sh
+
+ENV USER root
+
+ENTRYPOINT ["/usr/bin/owtf_entry.sh"]

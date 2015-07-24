@@ -23,6 +23,7 @@ RUN mkdir owtf/tools/restricted
 COPY modified/install.py -f owtf/install/install.py
 RUN ["python", "owtf/install/install.py"]
 ###################
+COPY modified/db_setup.sh owtf/scripts/db_setup.sh
 COPY modified/owtfdbinstall.sh -f owtf/scripts/
 RUN ["/bin/bash", "owtf/scripts/owtfdbinstall.sh"]
 ###################

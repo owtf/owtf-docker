@@ -100,7 +100,7 @@ class Installer(object):
         self.install_restricted_from_cfg(self.restricted_cfg)
 
         # Finally owtf python libraries installed using pip
-        self.install_using_pip(self.owtf_pip)
+        #self.install_using_pip(self.owtf_pip)
 
 if __name__ == "__main__":
     print("[!] There will be lot of output, please be patient")

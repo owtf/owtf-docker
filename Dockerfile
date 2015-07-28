@@ -28,8 +28,6 @@ RUN chmod +x owtf/scripts/owtfdbinstall.sh
 ###################
 COPY modified/dbmodify.py owtf/scripts/
 ###################
-COPY modified/interface_server.py owtf/framework/interface/
-RUN ["mv", "-f", "owtf/framework/interface/interface_server.py", "owtf/framework/interface/server.py"]
 
 EXPOSE 8009 8008
 
@@ -39,10 +37,15 @@ RUN rm packages.sh owtf.pip
 COPY optional_tools.sh /usr/bin/
 RUN chmod +x /usr/bin/optional_tools.sh
 
+#setup postgres
+USER postgres
+VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
+
+ENV USER root
+USER root
+
 #set entrypoint
 COPY owtf_entry.sh /usr/bin/
 RUN chmod +x /usr/bin/owtf_entry.sh
-
-ENV USER root
 
 ENTRYPOINT ["/usr/bin/owtf_entry.sh"]

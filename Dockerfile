@@ -19,8 +19,7 @@ RUN git clone -b develop https://github.com/owtf/owtf.git
 RUN mkdir owtf/tools/restricted
 
 ###################
-COPY modified/install.py owtf/install/install.py
-RUN ["python", "owtf/install/install.py"]
+RUN python owtf/install/install.py --no-user-input --core-only
 ###################
 COPY modified/db_setup.sh owtf/scripts/db_setup.sh
 COPY modified/owtfdbinstall.sh owtf/scripts/

@@ -104,12 +104,12 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     choice="Y"
     if [ "$choice" != "n" ]; then
         if [ "$saved_server_ip" == "" ]; then
-            sed "s/DATABASE_IP/& $postgres_server_ip" $db_config_file
+            sed "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
         else
             sed -i "/DATABASE_IP/s/$saved_server_ip/$postgres_server_ip/" $db_config_file
         fi
         if [ "$saved_server_port" == "" ]; then
-            sed "s/DATABASE_PORT/& $postgres_server_port" $db_config_file
+            sed "s/DATABASE_PORT*:/& $postgres_server_port/" $db_config_file
         else
             sed -i "/DATABASE_PORT/s/$saved_server_port/$postgres_server_port/" $db_config_file
         fi

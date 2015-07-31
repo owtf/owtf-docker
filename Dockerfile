@@ -1,6 +1,6 @@
 FROM kalilinux/kali-linux-docker
 
-MAINTAINER delta24
+MAINTAINER @delta24 viyat001@gmail.com, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
 RUN apt-get update && apt-get upgrade -y
 

@@ -77,7 +77,7 @@ if [ -z "$postgres_server_ip" ]; then
         service_bin=$(which service | wc -l)
         systemctl_bin=$(which systemctl | wc -l)
         if [ "$service_bin" = "1" ]; then
-            service postgresql start
+            sudo service postgresql start
         elif [ "$systemctl_bin" = "1" ]; then
             systemctl start postgresql
         else
@@ -103,8 +103,16 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     echo "[+] Do you want us to save the new settings for OWTF? [Y/n]"
     choice="Y"
     if [ "$choice" != "n" ]; then
-        sed -i "/DATABASE_IP/s/$saved_server_ip/$postgres_server_ip/" $db_config_file
-        sed -i "/DATABASE_PORT/s/$saved_server_port/$postgres_server_port/" $db_config_file
+        if [ "$saved_server_ip" == "" ]; then
+            sed "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
+        else
+            sed -i "/DATABASE_IP/s/$saved_server_ip/$postgres_server_ip/" $db_config_file
+        fi
+        if [ "$saved_server_port" == "" ]; then
+            sed "s/DATABASE_PORT*:/& $postgres_server_port/" $db_config_file
+        else
+            sed -i "/DATABASE_PORT/s/$saved_server_port/$postgres_server_port/" $db_config_file
+        fi
         echo "[+] New database configuration saved"
     fi
 fi

@@ -28,7 +28,7 @@ RUN chmod +x owtf/scripts/owtfdbinstall.sh
 COPY modified/dbmodify.py owtf/scripts/
 ###################
 
-EXPOSE 8009 8008
+EXPOSE 8010 8009 8008
 
 # cleanup
 RUN rm packages.sh owtf.pip
@@ -46,5 +46,6 @@ USER root
 #set entrypoint
 COPY owtf_entry.sh /usr/bin/
 RUN chmod +x /usr/bin/owtf_entry.sh
+COPY modified/server.py owtf/framework/interface/server.py
 
 ENTRYPOINT ["/usr/bin/owtf_entry.sh"]

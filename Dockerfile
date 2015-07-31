@@ -28,7 +28,7 @@ RUN chmod +x owtf/scripts/owtfdbinstall.sh
 COPY modified/dbmodify.py owtf/scripts/
 ###################
 
-EXPOSE 8009 8008
+EXPOSE 8010 8009 8008
 
 # cleanup
 RUN rm packages.sh owtf.pip

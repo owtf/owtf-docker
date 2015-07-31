@@ -82,8 +82,8 @@ echo "[+] Ensure that you have required values in $db_config_file"
 
 if [ "$Action" = "init" ]
 then
-    su postgres -c "psql -c \"CREATE USER $db_user WITH PASSWORD '$db_pass'\""
-    su postgres -c "psql -c \"CREATE DATABASE $db_name WITH OWNER $db_user ENCODING 'utf-8' TEMPLATE template0;\""
+    su - postgres -c "psql -c \"CREATE USER $db_user WITH PASSWORD '$db_pass'\""
+    su - postgres -c "psql -c \"CREATE DATABASE $db_name WITH OWNER $db_user ENCODING 'utf-8' TEMPLATE template0;\""
 elif [ "$Action" = "clean" ]
 then
     su - postgres -c "psql -c \"DROP DATABASE $db_name\""

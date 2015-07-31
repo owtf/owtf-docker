@@ -4,10 +4,10 @@ try:
     b=[]
     for line in a:
         if line.find('IP')!=-1:
-            line='DATABASE_IP: 127.0.0.1\n'
+            line='DATABASE_IP: 127.0.0.1 \n'
             b.append(line)
         elif line.find('PORT')!=-1:
-            line='DATABASE_PORT: 5432\n'
+            line='DATABASE_PORT: 5432 \n'
             b.append(line)
         else:
             b.append(line)
@@ -21,10 +21,10 @@ except:
     b=[]
     for line in a:
         if line.find('IP')!=-1:
-            line='DATABASE_IP: 127.0.0.1\n'
+            line='DATABASE_IP: 127.0.0.1 \n'
             b.append(line)
         elif line.find('PORT')!=-1:
-            line='DATABASE_PORT: 5432\n'
+            line='DATABASE_PORT: 5432 \n'
             b.append(line)
         else:
             b.append(line)

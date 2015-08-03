@@ -20,7 +20,6 @@ Official Docker image for [OWASP OWTF](http://owtf.org).
 
 *  You can launch your **OWTF** container by running `docker run -itd --privileged --net=host <image name>`.
    - `-d` launches the container as a *daemon*.
-   - `-p 8009:8009` maps the port 8009 of the host machine to the port 8009 of the container. (syntax: `<host port>:<container port>`)
    - Get the image name by running `docker images`.
 
 * Point your browser to `<hostip>:8009`.

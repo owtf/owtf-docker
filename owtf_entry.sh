@@ -28,5 +28,4 @@ if [ $# -gt 0 ]; then
 fi
 
 /bin/bash owtf/scripts/owtfdbinstall.sh
-python owtf/scripts/dbmodify.py
 python owtf/owtf.py

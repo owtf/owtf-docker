@@ -104,12 +104,12 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     choice="Y"
     if [ "$choice" != "n" ]; then
         if [ "$saved_server_ip" == "" ]; then
-            sed "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
+            sed -i "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
         else
             sed -i "/DATABASE_IP/s/$saved_server_ip/$postgres_server_ip/" $db_config_file
         fi
         if [ "$saved_server_port" == "" ]; then
-            sed "s/DATABASE_PORT*:/& $postgres_server_port/" $db_config_file
+            sed -i "s/DATABASE_PORT*:/& $postgres_server_port/" $db_config_file
         else
             sed -i "/DATABASE_PORT/s/$saved_server_port/$postgres_server_port/" $db_config_file
         fi
@@ -117,11 +117,11 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     fi
 fi
 
-check_owtf_db=$(su - postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")
+check_owtf_db=$(su postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")
 if [ "$check_owtf_db" = "0" ]; then
     echo "[+] The problem seems to be the user role and db mentioned in $db_config_file. Do you want us to create them? [Y/n]"
     choice="Y"
     if [ "$choice" != "n" ]; then
-        $RootDir/scripts/db_setup.sh init
+        $RootDir/scripts/db_setup.sh init $db_config_file
     fi
 fi

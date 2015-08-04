@@ -24,9 +24,8 @@ RUN mkdir owtf/tools/restricted
 RUN python owtf/install/install.py --no-user-input --core-only
 
 # DB installation and setup
-COPY modified/db_setup.sh owtf/scripts/db_setup.sh
-COPY modified/owtfdbinstall.sh owtf/scripts/
-RUN chmod +x owtf/scripts/owtfdbinstall.sh
+COPY postgres_entry.sh owtf/scripts/
+RUN chmod +x owtf/scripts/postgres_entry.sh
 
 # expose ports
 EXPOSE 8010 8009 8008

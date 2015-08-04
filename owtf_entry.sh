@@ -27,5 +27,5 @@ if [ $# -gt 0 ]; then
   done
 fi
 
-/bin/bash owtf/scripts/owtfdbinstall.sh
+/bin/bash owtf/scripts/postgres_entry.sh
 python owtf/owtf.py

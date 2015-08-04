@@ -51,9 +51,25 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+init_postgres() {
+    db_name=$1
+    db_user=$2
+    db_pass=$3
+    su postgres -c "psql -c \"CREATE USER $db_user WITH PASSWORD '$db_pass'\""
+    su postgres -c "psql -c \"CREATE DATABASE $db_name WITH OWNER $db_user ENCODING 'utf-8' TEMPLATE template0;\""
+}
+
+clean_postgres() {
+    db_name=$1
+    db_user=$2
+    su postgres -c "psql -c \"DROP DATABASE $db_name\""
+    su postgres -c "psql -c \"DROP USER $db_user\""
+}
+
+
 FILE_PATH=$(readlink -f "$0")
 SCRIPTS_DIR=$(dirname "$FILE_PATH")
-RootDir=${2:-$(dirname "$SCRIPTS_DIR")}
+RootDir=${1:-$(dirname "$SCRIPTS_DIR")}
 
 config_file="$RootDir/framework/config/framework_config.cfg"
 db_config_file="$(get_config_value DATABASE_SETTINGS_FILE $config_file)"
@@ -65,33 +81,8 @@ saved_server_dbname="$(get_config_value DATABASE_NAME $db_config_file)"
 saved_server_user="$(get_config_value DATABASE_USER $db_config_file)"
 saved_server_pass="$(get_config_value DATABASE_PASS $db_config_file)"
 
-# Check if postgres is running
-postgres_server_ip=$(get_postgres_server_ip)
-postgres_server_port=$(get_postgres_server_port)
-
-if [ -z "$postgres_server_ip" ]; then
-    echo "[+] PostgreSQL server is not running."
-    echo "[+] Can I start db server for you? [Y/n]"
-    choice="y"
-    if [ "$choice" != "n" ]; then
-        service_bin=$(which service | wc -l)
-        systemctl_bin=$(which systemctl | wc -l)
-        if [ "$service_bin" = "1" ]; then
-            sudo service postgresql start
-        elif [ "$systemctl_bin" = "1" ]; then
-            systemctl start postgresql
-        else
-            echo "[+] We couldn't determine how to start the postgres server, please start it and rerun this script"
-            exit 1
-        fi
-    else
-        echo "[+] On DEBIAN based distro [i.e Kali, Ubuntu etc..]"
-        echo "          sudo service postgresql start"
-        echo "[+] On RPM based distro [i.e Fedora etc..]"
-        echo "          sudo systemctl start postgresql"
-        exit 1
-    fi
-fi
+# Restart postgres service. 
+/etc/init.d/postgresql restart
 
 # Refresh postgres settings
 postgres_server_ip=$(get_postgres_server_ip)
@@ -100,8 +91,7 @@ postgres_server_port=$(get_postgres_server_port)
 if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" != "$saved_server_port" ]; then
     echo "[+] Postgres running on $postgres_server_ip:$postgres_server_port"
     echo "[+] OWTF db config points towards $saved_server_ip:$saved_server_port"
-    echo "[+] Do you want us to save the new settings for OWTF? [Y/n]"
-    choice="Y"
+
     if [ "$choice" != "n" ]; then
         if [ "$saved_server_ip" == "" ]; then
             sed -i "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
@@ -117,11 +107,10 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     fi
 fi
 
-check_owtf_db=$(su postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")
-if [ "$check_owtf_db" = "0" ]; then
-    echo "[+] The problem seems to be the user role and db mentioned in $db_config_file. Do you want us to create them? [Y/n]"
-    choice="Y"
-    if [ "$choice" != "n" ]; then
-        $RootDir/scripts/db_setup.sh init $db_config_file
-    fi
+# Clean db before creating it.
+check_owtf_db=$(su - postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")
+
+if [ "$check_owtf_db" != "0" ]; then
+    clean_postgres $saved_server_dbname $saved_server_user
 fi
+init_postgres $saved_server_dbname $saved_server_user $saved_server_pass

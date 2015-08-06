@@ -13,6 +13,7 @@ function parse_arg {
   if [[ "$1" == "--update" ]] || [[ "$1" == "-u" ]]; then
     echo "Installing optional dependencies ..." >&2
     /bin/bash /usr/bin/optional_tools.sh
+    python owtf/install/install.py --core-only --no-user-input
     echo "OWTF optional dependencies were successfully installed" >&2
   fi
 
@@ -27,5 +28,7 @@ if [ $# -gt 0 ]; then
   done
 fi
 
+/bin/bash owtf/install/proxy_CA.sh owtf
+/bin/bash owtf/install/db_config_setup.sh owtf --cfg-only
 /bin/bash owtf/scripts/postgres_entry.sh
 python owtf/owtf.py

@@ -4,9 +4,6 @@ MAINTAINER @delta24 viyat001@gmail.com, @alexandrasandulescu alecsandra.sandules
 
 RUN apt-get update && apt-get upgrade -y
 
-#Kali SSL lib-fix
-ENV PYCURL_SSL_LIBRARY openssl
-
 # install required packages from Kali repos
 COPY packages.sh /
 RUN ["sh", "packages.sh"]
@@ -15,6 +12,9 @@ RUN ["sh", "packages.sh"]
 COPY owtf.pip /
 RUN ["pip", "install", "--upgrade", "pip"]
 RUN ["pip", "install", "--upgrade", "-r", "owtf.pip"]
+
+#Kali SSL lib-fix
+ENV PYCURL_SSL_LIBRARY openssl
 
 #download latest OWTF
 RUN git clone -b develop https://github.com/owtf/owtf.git

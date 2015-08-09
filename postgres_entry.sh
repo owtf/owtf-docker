@@ -66,7 +66,6 @@ clean_postgres() {
     su postgres -c "psql -c \"DROP USER $db_user\""
 }
 
-
 FILE_PATH=$(readlink -f "$0")
 SCRIPTS_DIR=$(dirname "$FILE_PATH")
 RootDir=${1:-$(dirname "$SCRIPTS_DIR")}
@@ -81,8 +80,25 @@ saved_server_dbname="$(get_config_value DATABASE_NAME $db_config_file)"
 saved_server_user="$(get_config_value DATABASE_USER $db_config_file)"
 saved_server_pass="$(get_config_value DATABASE_PASS $db_config_file)"
 
-# Restart postgres service. 
-/etc/init.d/postgresql restart
+# Postgres setup.
+PGDATA=/var/lib/postgresql/$PG_MAJOR/data
+PGLOG=$PGDATA/serverlog
+
+echo "port=54320" >> /etc/postgresql/9.1/main/postgresql.conf
+mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
+mkdir -p $PGDATA && chown -R postgres $PGDATA
+
+# Restart postgres service.
+systemctl_bin=$(which systemctl | wc -l 2> /dev/null)
+if [ "$systemctl_bin" = "1" ]; then
+  systemctl restart postgresql
+else
+  START_CMD="/usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl -w \
+    -D $PGDATA \
+    -o \"-c config_file=/etc/postgresql/$PG_MAJOR/main/postgresql.conf\" \
+    restart"
+  su postgres -c "$START_CMD" >> $PGLOG 2> $PGLOG
+fi
 
 # Refresh postgres settings
 postgres_server_ip=$(get_postgres_server_ip)

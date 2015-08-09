@@ -38,6 +38,7 @@ RUN chmod +x /usr/bin/optional_tools.sh
 
 #setup postgres
 USER postgres
+ENV PG_MAJOR 9.1
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 # setting user to root

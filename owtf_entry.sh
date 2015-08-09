@@ -27,5 +27,8 @@ if [ $# -gt 0 ]; then
   done
 fi
 
+# Start postgres server and configure db.
 /bin/bash owtf/scripts/postgres_entry.sh
+
+# Run owtf.
 python owtf/owtf.py

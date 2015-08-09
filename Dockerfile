@@ -20,9 +20,6 @@ ENV PYCURL_SSL_LIBRARY openssl
 RUN git clone -b develop https://github.com/owtf/owtf.git
 RUN mkdir owtf/tools/restricted
 
-# core installation
-RUN python owtf/install/install.py --no-user-input --core-only
-
 # DB installation and setup
 COPY postgres_entry.sh owtf/scripts/
 RUN chmod +x owtf/scripts/postgres_entry.sh

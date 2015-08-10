@@ -1,0 +1,11 @@
+--- owtf/framework/config/framework_config.cfg	2015-08-10 19:07:53.393358476 +0300
++++ owtf/framework/config/docker_framework_config.cfg	2015-08-10 19:17:56.882080902 +0300
+@@ -15,7 +15,7 @@
+ 
+ 
+ # ------------------------- Interface Server ------------------------- #
+-SERVER_ADDR: 127.0.0.1
++SERVER_ADDR: 0.0.0.0
+ UI_SERVER_PORT: 8009
+ FILE_SERVER_PORT: 8010
+ 

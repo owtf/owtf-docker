@@ -20,8 +20,9 @@ function parse_arg {
 
   if [[ "$1" == "--exposed" ]] || [[ "$1" == "-e" ]]; then
     echo "[*] Make sure you run this image with the proper parameters" >&2
-    echo "[*] #docker run -it -p 8009:8009 -p 8010:8010 --privileged <image_name>" >&2
+    echo "[*] #docker run -it -p 8008:8008 -p 8009:8009 -p 8010:8010 --privileged <image_name>" >&2
     patch owtf/framework/config/framework_config.cfg -i owtf/framework_config.cfg.patch
+    patch owtf/profiles/general/default.cfg -i owtf/default.cfg.patch
   fi
 
 

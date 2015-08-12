@@ -21,6 +21,7 @@ RUN git clone -b develop https://github.com/owtf/owtf.git
 RUN mkdir owtf/tools/restricted
 # allow access to the web ui from outside
 COPY framework_config.cfg.patch owtf/
+COPY default.cfg.patch owtf/
 
 # core installation
 RUN python owtf/install/install.py --no-user-input --core-only

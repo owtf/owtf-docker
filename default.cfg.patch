@@ -1,0 +1,11 @@
+--- profiles/general/default.cfg	2015-08-01 16:17:28.120795820 +0300
++++ profiles/general/docker_default.cfg	2015-08-12 23:25:10.547195198 +0300
+@@ -168,7 +168,7 @@
+ 
+ [INBOUND_PROXY]
+ # ************************* Inbound Proxy Configuration ***************************** #
+-INBOUND_PROXY_IP: 127.0.0.1
++INBOUND_PROXY_IP: 0.0.0.0
+ INBOUND_PROXY_PORT: 8008
+ INBOUND_PROXY_PROCESSES: 0
+ INBOUND_PROXY_PROCESSES_DESCRIP: '0' equals number of cores in processor

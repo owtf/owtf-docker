@@ -7,7 +7,9 @@ apt-get install -y theharvester \
                    skipfish \
                    w3af-console \
                    dirbuster \
+                   metasploit \
                    wpscan \
                    wapiti \
                    waffit \
+                   whatweb \
                    hydra

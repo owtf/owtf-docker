@@ -27,6 +27,10 @@ function parse_arg {
 
 
 }
+
+# Start postgres server and configure db.
+/bin/bash owtf/scripts/postgres_entry.sh
+
 if [ $# -gt 0 ]; then
   for arg in "$@"
   do
@@ -36,9 +40,6 @@ if [ $# -gt 0 ]; then
     fi
   done
 fi
-
-# Start postgres server and configure db.
-/bin/bash owtf/scripts/postgres_entry.sh
 
 # Run owtf.
 python owtf/owtf.py

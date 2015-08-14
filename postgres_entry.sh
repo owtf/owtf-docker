@@ -84,7 +84,6 @@ saved_server_pass="$(get_config_value DATABASE_PASS $db_config_file)"
 PGDATA=/var/lib/postgresql/$PG_MAJOR/data
 PGLOG=$PGDATA/serverlog
 
-echo "port=54320" >> /etc/postgresql/9.1/main/postgresql.conf
 mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 mkdir -p $PGDATA && chown -R postgres $PGDATA
 

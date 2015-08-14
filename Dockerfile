@@ -2,7 +2,7 @@ FROM kalilinux/kali-linux-docker
 
 MAINTAINER @delta24 viyat001@gmail.com, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update --fix-missing && apt-get upgrade -y
 
 # install required packages from Kali repos
 COPY packages.sh /

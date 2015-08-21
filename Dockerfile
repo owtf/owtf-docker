@@ -8,6 +8,11 @@ RUN apt-get update --fix-missing && apt-get upgrade -y
 COPY packages.sh /
 RUN ["sh", "packages.sh"]
 
+# dowload optional packages archives
+COPY optional_tools.sh /usr/bin/
+RUN chmod +x /usr/bin/optional_tools.sh
+RUN /bin/bash /usr/bin/optional_tools.sh --download-only
+
 # upgrade pip and install required python packages
 COPY owtf.pip /
 RUN ["pip", "install", "--upgrade", "pip"]
@@ -35,9 +40,6 @@ EXPOSE 8010 8009 8008
 
 # cleanup
 RUN rm packages.sh owtf.pip
-
-COPY optional_tools.sh /usr/bin/
-RUN chmod +x /usr/bin/optional_tools.sh
 
 #setup postgres
 USER postgres

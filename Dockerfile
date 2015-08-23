@@ -7,6 +7,9 @@ RUN apt-get update --fix-missing && apt-get upgrade -y
 # install required packages from Kali repos
 COPY packages.sh /
 RUN ["sh", "packages.sh"]
+# Cleanup
+RUN apt-get clean
+RUN apt-get autoremove
 
 # dowload optional packages archives
 COPY optional_tools.sh /usr/bin/

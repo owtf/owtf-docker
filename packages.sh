@@ -15,4 +15,5 @@ apt-get install -y  sudo \
                     libffi-dev \
                     python-dev \
                     postgresql \
-                    postgresql-client-9.1
+                    postgresql-client \
+                    postgresql-client-common \

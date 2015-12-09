@@ -7,7 +7,7 @@ PACKAGES="theharvester \
           skipfish \
           w3af-console \
           dirbuster \
-          metasploit \
+          metasploit-framework \
           wpscan \
           wapiti \
           waffit \

@@ -52,8 +52,10 @@ saved_server_dbname="$(get_config_value DATABASE_NAME $db_config_file)"
 saved_server_user="$(get_config_value DATABASE_USER $db_config_file)"
 saved_server_pass="$(get_config_value DATABASE_PASS $db_config_file)"
 
+postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"
+
 # Postgres setup.
-PGDATA=/var/lib/postgresql/$PG_MAJOR/data
+PGDATA=/var/lib/postgresql/${postgres_version}/data
 PGLOG=$PGDATA/serverlog
 
 mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
@@ -64,9 +66,9 @@ systemctl_bin=$(which systemctl | wc -l 2> /dev/null)
 if [ "$systemctl_bin" = "1" ]; then
   systemctl restart postgresql
 else
-  START_CMD="/usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl -w \
+  START_CMD="/usr/lib/postgresql/${postgres_version}/bin/pg_ctl -w \
     -D $PGDATA \
-    -o \"-c config_file=/etc/postgresql/$PG_MAJOR/main/postgresql.conf\" \
+    -o \"-c config_file=/etc/postgresql/${postgres_version}/main/postgresql.conf\" \
     restart"
   su postgres -c "$START_CMD" >> $PGLOG 2> $PGLOG
 fi
@@ -94,10 +96,39 @@ if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" 
     fi
 fi
 
+postgresql_fix() {
+  # remove SSL=true from the postgresql main config
+  postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"
+
+  postgres_conf="/etc/postgresql/$postgres_version/main/postgresql.conf"
+  echo "Removing SSL = true from the main postgres config"
+  sed -i -e '/ssl =/ s/= .*/= false/' $postgres_conf
+
+  echo "Restarting the postgresql service"
+  service_bin=$(which service | wc -l)
+  systemctl_bin=$(which systemctl | wc -l)
+  if [ "$service_bin" = "1" ]; then
+      service postgresql restart
+      service postgresql status | grep -q '^Running clusters: ..*$'
+      status_exitcode="$?"
+  elif [ "$systemctl_bin" = "1" ]; then
+      systemctl restart postgresql
+      systemctl status postgresql | grep -q "active"
+      status_exitcode="$?"
+  else
+      echo "[+] It seems postgres server is not running or responding, please restart it manually!"
+      exit 1
+  fi
+}
+
 # Clean db before creating it.
 check_owtf_db=$(su - postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")
 
 if [ "$check_owtf_db" != "0" ]; then
     clean_postgres $saved_server_dbname $saved_server_user
 fi
+
+# Fix postgresql config
+postgresql_fix
+
 init_postgres $saved_server_dbname $saved_server_user $saved_server_pass

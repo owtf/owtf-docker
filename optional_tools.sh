@@ -11,7 +11,9 @@ PACKAGES="theharvester \
           wpscan \
           wapiti \
           waffit \
-          hydra"
+          hydra \
+          metagoofil \
+          o-saft"
 
 if [ "$1" = "--download-only" ]; then
   apt-get install -d -y $PACKAGES

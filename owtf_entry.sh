@@ -24,9 +24,6 @@ function parse_arg {
     patch owtf/framework/config/framework_config.cfg -i owtf/framework_config.cfg.patch
     patch owtf/profiles/general/default.cfg -i owtf/default.cfg.patch
   fi
-
-
-
 }
 
 # Start postgres server and configure db.

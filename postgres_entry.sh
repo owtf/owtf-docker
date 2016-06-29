@@ -2,10 +2,8 @@
 # extensively on Kali
 
 get_config_value(){
-
     parameter=$1
     file=$2
-
     echo "$(grep -i $parameter $file | sed  "s|$parameter: ||g;s|~|$HOME|g")"
 }
 
@@ -99,26 +97,37 @@ fi
 postgresql_fix() {
   # remove SSL=true from the postgresql main config
   postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"
+  postgres_conf="$(echo 'SHOW config_file;' | sudo -u postgres psql | grep 'postgres')"
+  echo "Having SSL=true in postgres config causes many errors (psycopg2 problem)"
+  # patched for docker installation
+  remove_ssl="y"  # tolower
+  case $remove_ssl in
+    [yY][eE][sS]|[yY])
+      sed -i -e '/ssl =/ s/= .*/= false/' $postgres_conf
 
-  postgres_conf="/etc/postgresql/$postgres_version/main/postgresql.conf"
-  echo "Removing SSL = true from the main postgres config"
-  sed -i -e '/ssl =/ s/= .*/= false/' $postgres_conf
-
-  echo "Restarting the postgresql service"
-  service_bin=$(which service | wc -l)
-  systemctl_bin=$(which systemctl | wc -l)
-  if [ "$service_bin" = "1" ]; then
-      service postgresql restart
-      service postgresql status | grep -q '^Running clusters: ..*$'
-      status_exitcode="$?"
-  elif [ "$systemctl_bin" = "1" ]; then
-      systemctl restart postgresql
-      systemctl status postgresql | grep -q "active"
-      status_exitcode="$?"
-  else
-      echo "[+] It seems postgres server is not running or responding, please restart it manually!"
-      exit 1
-  fi
+      echo "Restarting the postgresql service"
+      # get the return values of which commands to determine the service controller
+      which service  >> /dev/null 2>&1
+      service_bin=$?
+      which systemctl  >> /dev/null 2>&1
+      systemctl_bin=$?
+      if [ "$service_bin" != "1" ]; then
+        service postgresql restart
+        service postgresql status | grep -q '^Running clusters: ..*$'
+        status_exitcode="$?"
+      elif [ "$systemctl_bin" != "1" ]; then
+        systemctl restart postgresql
+        systemctl status postgresql | grep -q "active"
+        status_exitcode="$?"
+      else
+        echo "[+] It seems postgres server is not running or responding, please start/restart it manually!"
+        exit 1
+      fi
+      ;;
+    *)
+      # do nothing
+      ;;
+  esac
 }
 
 # Clean db before creating it.

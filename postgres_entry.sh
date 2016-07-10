@@ -71,29 +71,6 @@ else
   su postgres -c "$START_CMD" >> $PGLOG 2> $PGLOG
 fi
 
-# Refresh postgres settings
-postgres_server_ip=$(get_postgres_server_ip)
-postgres_server_port=$(get_postgres_server_port)
-
-if [ "$postgres_server_ip" != "$saved_server_ip" ] || [ "$postgres_server_port" != "$saved_server_port" ]; then
-    echo "[+] Postgres running on $postgres_server_ip:$postgres_server_port"
-    echo "[+] OWTF db config points towards $saved_server_ip:$saved_server_port"
-
-    if [ "$choice" != "n" ]; then
-        if [ "$saved_server_ip" == "" ]; then
-            sed -i "s/DATABASE_IP*:/& $postgres_server_ip/" $db_config_file
-        else
-            sed -i "/DATABASE_IP/s/$saved_server_ip/$postgres_server_ip/" $db_config_file
-        fi
-        if [ "$saved_server_port" == "" ]; then
-            sed -i "s/DATABASE_PORT*:/& $postgres_server_port/" $db_config_file
-        else
-            sed -i "/DATABASE_PORT/s/$saved_server_port/$postgres_server_port/" $db_config_file
-        fi
-        echo "[+] New database configuration saved"
-    fi
-fi
-
 postgresql_fix() {
   # remove SSL=true from the postgresql main config
   postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"

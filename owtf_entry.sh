@@ -24,10 +24,13 @@ function parse_arg {
     patch owtf/framework/config/framework_config.cfg -i owtf/framework_config.cfg.patch
     patch owtf/profiles/general/default.cfg -i owtf/default.cfg.patch
   fi
+
+  rm -f owtf/default.cfg.patch
+  rm -f owtf/framework_config.cfg.patch
 }
 
 # Start postgres server and configure db.
-/bin/bash owtf/scripts/postgres_entry.sh
+sh owtf/scripts/postgres_entry.sh
 
 if [ $# -gt 0 ]; then
   for arg in "$@"
@@ -40,4 +43,5 @@ if [ $# -gt 0 ]; then
 fi
 
 # Run owtf.
-python owtf/owtf.py
+cd owtf
+./owtf.py

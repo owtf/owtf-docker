@@ -12,6 +12,7 @@ apt-get install -y  sudo \
                     unzip \
                     build-essential \
                     libssl-dev \
+                    libz-dev \
                     libffi-dev \
                     python-dev \
                     postgresql \

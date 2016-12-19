@@ -8,7 +8,7 @@ function parse_arg {
     echo "Usage : $0 [OPTIONS]" >&2
     echo -e "-h, --help\n\tDisplay help and exit" >&2
     echo -e "-u, --update\n\tInstall optional dependencies" >&2
-    echo -e "-u, --exposed\n\tAllow access to the web ui. Recommended when a virtual host is used" >&2
+    echo -e "-e, --exposed\n\tAllow access to the web ui. Recommended when a virtual host is used" >&2
     return
   fi
 

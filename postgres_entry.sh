@@ -72,7 +72,7 @@ postgresql_restart
 postgresql_fix() {
   # remove SSL=true from the postgresql main config
   postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"
-  postgres_conf="$(echo 'SHOW config_file;' | sudo -u postgres psql | grep 'postgres')"
+  postgres_conf="$(echo 'SHOW config_file;' | sudo -u postgres psql 2>/dev/null | grep 'postgres')"
   echo "Having SSL=true in postgres config causes many errors (psycopg2 problem)"
   # patched for docker installation
   remove_ssl="y"  # tolower

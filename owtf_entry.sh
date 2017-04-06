@@ -21,8 +21,9 @@ function parse_arg {
   if [[ "$1" == "--exposed" ]] || [[ "$1" == "-e" ]]; then
     echo "[*] Make sure you run this image with the proper parameters" >&2
     echo "[*] #docker run -it -p 8008:8008 -p 8009:8009 -p 8010:8010 --privileged <image_name>" >&2
-    patch owtf/framework/config/framework_config.cfg -i owtf/framework_config.cfg.patch
-    patch owtf/profiles/general/default.cfg -i owtf/default.cfg.patch
+    sed -i 's@INBOUND_PROXY_IP: 127.0.0.1@INBOUND_PROXY_IP: 0.0.0.0@' ~/.owtf/configuration/general.cfg
+    sed -i 's@SERVER_ADDR: 127.0.0.1@SERVER_ADDR: 0.0.0.0@' ~/.owtf/configuration/framework_config.cfg
+    
   fi
 
   rm -f owtf/default.cfg.patch
@@ -43,5 +44,5 @@ if [ $# -gt 0 ]; then
 fi
 
 # Run owtf.
-cd owtf
-./owtf.py
+source ~/.bashrc; workon owtf
+./owtf/owtf.py

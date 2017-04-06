@@ -15,7 +15,8 @@ RUN apt-get autoremove
 # dowload optional packages archives
 COPY optional_tools.sh /usr/bin/
 RUN chmod +x /usr/bin/optional_tools.sh
-RUN /bin/bash /usr/bin/optional_tools.sh --download-only
+
+RUN /bin/bash /usr/bin/optional_tools.sh # --download-only
 
 # upgrade pip and install required python packages
 COPY owtf.pip /
@@ -32,8 +33,10 @@ RUN mkdir owtf/tools/restricted
 COPY framework_config.cfg.patch owtf/
 COPY default.cfg.patch owtf/
 
+ENV TERM xterm
+ENV SHELL /bin/bash
 # core installation
-RUN python owtf/install/install.py --no-user-input --core-only
+RUN python owtf/install/install.py --no-user-input
 
 # DB installation and setup
 COPY postgres_entry.sh owtf/scripts/

@@ -40,7 +40,7 @@ FILE_PATH=$(readlink -f "$0")
 SCRIPTS_DIR=$(dirname "$FILE_PATH")
 RootDir=${1:-$(dirname "$SCRIPTS_DIR")}
 
-config_file="$RootDir/framework/config/framework_config.cfg"
+config_file="/root/.owtf/configuration/framework_config.cfg"
 db_config_file="$(get_config_value DATABASE_SETTINGS_FILE $config_file)"
 
 # Saved postgres settings

@@ -5,7 +5,6 @@ PACKAGES="theharvester \
           nmap \
           whatweb \
           skipfish \
-          w3af-console \
           dirbuster \
           metasploit-framework \
           wpscan \

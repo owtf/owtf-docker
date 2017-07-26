@@ -1,6 +1,6 @@
 FROM kalilinux/kali-linux-docker
 
-MAINTAINER @delta24 viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
+MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
 RUN apt-get update --fix-missing && apt-get upgrade -y
 
@@ -29,7 +29,7 @@ ENV TERM xterm
 ENV SHELL /bin/bash
 
 # core installation
-RUN python owtf/install/install.py --no-user-input
+RUN python owtf/install/install.py
 
 # expose ports
 EXPOSE 8010 8009 8008

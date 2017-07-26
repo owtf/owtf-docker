@@ -83,7 +83,39 @@ postgresql_start() {
   fi
 }
 
+postgresql_fix() {
+  # remove SSL=true from the postgresql main config
+  postgres_version="$(psql --version 2>&1 | tail -1 | awk '{print $3}' | sed 's/\./ /g' | awk '{print $1 "." $2}')"
+  postgres_conf="$(echo 'SHOW config_file;' | sudo -u postgres psql | grep 'postgres')"
+  # hardcode
+  remove_ssl="y"
+  case $remove_ssl in
+    [yY][eE][sS]|[yY])
+      sudo sed -i -e '/ssl =/ s/= .*/= false/' $postgres_conf
+      echo "Restarting the postgresql service"
+      # get the return values of which commands to determine the service controller
+      sudo which service  >> /dev/null 2>&1
+      service_bin=$?
+      sudo which systemctl  >> /dev/null 2>&1
+      systemctl_bin=$?
+      if [ "$service_bin" != "1" ]; then
+        sudo service postgresql restart
+        sudo service postgresql status | grep -q "Active: active"
+      elif [ "$systemctl_bin" != "1" ]; then
+        sudo systemctl restart postgresql
+        sudo systemctl status postgresql | grep -q "Active: active"
+      else
+        sudo pg_ctlcluster ${postgres_version} main restart
+      fi
+      ;;
+    *)
+      # do nothing
+      ;;
+  esac
+}
+
 postgresql_start
+postgresql_fix
 
 # Clean db before creating it.
 check_owtf_db=$(su - postgres -c "psql -l | grep -w $saved_server_dbname | grep -w $saved_server_user | wc -l")

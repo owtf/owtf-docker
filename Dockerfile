@@ -10,7 +10,7 @@ RUN ["sh", "packages.sh"]
 
 # Cleanup
 RUN apt-get clean
-RUN apt-get autoremove
+RUN apt-get -y autoremove
 
 # dowload optional packages archives
 COPY optional_tools.sh /usr/bin/

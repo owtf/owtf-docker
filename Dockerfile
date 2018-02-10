@@ -2,6 +2,9 @@ FROM kalilinux/kali-linux-docker
 
 MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
+# Kali signatures preventive update
+RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
+
 RUN apt-get update --fix-missing && apt-get upgrade -y
 
 # install required packages from Kali repos

@@ -19,11 +19,11 @@ function parse_arg {
 }
 
 # Patch server address so that they are exposed to the host
-sed -i 's@INBOUND_PROXY_IP: 127.0.0.1@INBOUND_PROXY_IP: 0.0.0.0@' ${HOME}/.owtf/configuration/general.cfg
-sed -i 's@SERVER_ADDR: 127.0.0.1@SERVER_ADDR: 0.0.0.0@' ${HOME}/.owtf/configuration/framework_config.cfg
+sed -i 's@INBOUND_PROXY_IP: 127.0.0.1@INBOUND_PROXY_IP: 0.0.0.0@' ${HOME}/.owtf/conf/general.cfg
+sed -i 's@SERVER_ADDR: 127.0.0.1@SERVER_ADDR: 0.0.0.0@' ${HOME}/.owtf/conf/framework.cfg
 
 # Start postgres server and configure db.
-sh owtf/scripts/postgres_entry.sh
+sh /owtf/postgres_entry.sh
 
 if [ $# -gt 0 ]; then
   for arg in "$@"
@@ -35,6 +35,5 @@ if [ $# -gt 0 ]; then
   done
 fi
 
-# Run owtf.
-source ~/.bashrc; workon owtf
-./owtf/owtf.py
+# Run owtf
+python -m owtf

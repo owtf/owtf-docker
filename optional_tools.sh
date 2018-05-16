@@ -9,7 +9,6 @@ PACKAGES="theharvester \
           metasploit-framework \
           wpscan \
           wapiti \
-          waffit \
           hydra \
           metagoofil \
           o-saft"

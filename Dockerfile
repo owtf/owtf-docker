@@ -3,9 +3,8 @@ FROM kalilinux/kali-linux-docker
 MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
 # Kali signatures preventive update
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg
 RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
-
-RUN apt-get update --fix-missing && apt-get upgrade -y
 
 # install required packages from Kali repos
 COPY packages.sh /
@@ -25,14 +24,16 @@ RUN /bin/bash /usr/bin/optional_tools.sh
 ENV PYCURL_SSL_LIBRARY openssl
 
 #download latest OWTF
-RUN git clone -b develop https://github.com/owtf/owtf.git
-RUN mkdir owtf/tools/restricted
+RUN git clone -b master https://github.com/owtf/owtf.git
+RUN mkdir -p /owtf/data/tools/restricted
 
 ENV TERM xterm
 ENV SHELL /bin/bash
 
+WORKDIR /owtf
+
 # core installation
-RUN python owtf/install/install.py
+RUN python setup.py develop
 
 # expose ports
 EXPOSE 8010 8009 8008
@@ -46,7 +47,7 @@ ENV USER root
 USER root
 
 # Copy postgres_entry to scripts
-COPY postgres_entry.sh owtf/scripts
+COPY postgres_entry.sh /owtf/
 
 #set entrypoint
 COPY owtf_entry.sh /usr/bin/

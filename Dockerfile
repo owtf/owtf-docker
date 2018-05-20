@@ -1,10 +1,6 @@
 FROM kalilinux/kali-linux-docker
 
-MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
-
-# Kali signatures preventive update
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg
-RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
+MAINTAINER r3naissance
 
 # install required packages from Kali repos
 COPY packages.sh /

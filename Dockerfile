@@ -28,7 +28,7 @@ RUN tar -xf arachni-2.0dev-1.0dev-linux-x86_64.tar.gz && mv arachni-2.0dev-1.0de
 ENV PYCURL_SSL_LIBRARY openssl
 
 #download latest OWTF
-RUN git clone -b master https://github.com/r3naissance/owtf.git
+RUN git clone -b master https://github.com/owtf/owtf.git
 RUN mkdir -p /owtf/data/tools/restricted
 
 ENV TERM xterm

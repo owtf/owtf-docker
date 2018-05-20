@@ -2,6 +2,8 @@ FROM kalilinux/kali-linux-docker
 
 MAINTAINER r3naissance
 
+RUN apt-get update && apt-get dist-upgrade -y
+
 # install required packages from Kali repos
 COPY packages.sh /
 RUN ["sh", "packages.sh"]

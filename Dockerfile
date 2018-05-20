@@ -1,10 +1,8 @@
 FROM kalilinux/kali-linux-docker
 
-MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
+MAINTAINER r3naissance
 
-# Kali signatures preventive update
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg
-RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
+RUN apt-get update && apt-get dist-upgrade -y
 
 # install required packages from Kali repos
 COPY packages.sh /
@@ -14,11 +12,17 @@ RUN ["sh", "packages.sh"]
 RUN apt-get clean
 RUN apt-get -y autoremove
 
-# dowload optional packages archives
-COPY optional_tools.sh /usr/bin/
-RUN chmod +x /usr/bin/optional_tools.sh
+RUN apt-get install -y kali-linux-web
 
-RUN /bin/bash /usr/bin/optional_tools.sh
+# Fixing Wapiti
+RUN apt-get remove -y wapiti
+RUN wget https://phoenixnap.dl.sourceforge.net/project/wapiti/wapiti/wapiti-3.0.1/wapiti3-3.0.1.tar.gz && tar -xf wapiti3-3.0.1.tar.gz
+RUN cd wapiti3-3.0.1 && python3 setup.py install
+RUN wget -P /root/config http://cirt.net/nikto/UPDATES/2.1.5/db_tests && mv /root/config/db_tests /root/config/nikto_db
+
+# Fixing Arachni
+RUN rm -rf /usr/share/arachni && wget http://downloads.arachni-scanner.com/nightlies/arachni-2.0dev-1.0dev-linux-x86_64.tar.gz
+RUN tar -xf arachni-2.0dev-1.0dev-linux-x86_64.tar.gz && mv arachni-2.0dev-1.0dev /usr/share/arachni
 
 #Kali SSL lib-fix
 ENV PYCURL_SSL_LIBRARY openssl

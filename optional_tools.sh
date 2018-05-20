@@ -11,6 +11,7 @@ PACKAGES="theharvester \
           wapiti \
           hydra \
           metagoofil \
+          arachni \
           o-saft"
 
 if [ "$1" = "--download-only" ]; then

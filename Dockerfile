@@ -12,11 +12,7 @@ RUN ["sh", "packages.sh"]
 RUN apt-get clean
 RUN apt-get -y autoremove
 
-# dowload optional packages archives
-COPY optional_tools.sh /usr/bin/
-RUN chmod +x /usr/bin/optional_tools.sh
-
-RUN /bin/bash /usr/bin/optional_tools.sh
+RUN apt-get install kali-linux-full
 
 #Kali SSL lib-fix
 ENV PYCURL_SSL_LIBRARY openssl

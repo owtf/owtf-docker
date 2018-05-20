@@ -12,7 +12,7 @@ RUN ["sh", "packages.sh"]
 RUN apt-get clean
 RUN apt-get -y autoremove
 
-RUN apt-get install kali-linux-full
+RUN apt-get install kali-linux-top10 kali-linux-web
 
 #Kali SSL lib-fix
 ENV PYCURL_SSL_LIBRARY openssl

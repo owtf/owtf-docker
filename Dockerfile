@@ -12,15 +12,23 @@ RUN ["sh", "packages.sh"]
 RUN apt-get clean
 RUN apt-get -y autoremove
 
-# Install some Kali components
-# See https://www.kali.org/news/kali-linux-metapackages/ for details
-RUN apt-get install -y kali-linux-top10 kali-linux-web
+RUN apt-get install -y kali-linux-web
+
+# Fixing Wapiti
+RUN apt-get remove -y wapiti
+RUN wget https://phoenixnap.dl.sourceforge.net/project/wapiti/wapiti/wapiti-3.0.1/wapiti3-3.0.1.tar.gz && tar -xf wapiti3-3.0.1.tar.gz
+RUN cd wapiti3-3.0.1 && python3 setup.py install
+RUN wget -P /root/config http://cirt.net/nikto/UPDATES/2.1.5/db_tests && mv /root/config/db_tests /root/config/nikto_db
+
+# Fixing Arachni
+RUN rm -rf /usr/share/arachni && wget http://downloads.arachni-scanner.com/nightlies/arachni-2.0dev-1.0dev-linux-x86_64.tar.gz
+RUN tar -xf arachni-2.0dev-1.0dev-linux-x86_64.tar.gz && mv arachni-2.0dev-1.0dev /usr/share/arachni
 
 #Kali SSL lib-fix
 ENV PYCURL_SSL_LIBRARY openssl
 
 #download latest OWTF
-RUN git clone -b master https://github.com/owtf/owtf.git
+RUN git clone -b master https://github.com/r3naissance/owtf.git
 RUN mkdir -p /owtf/data/tools/restricted
 
 ENV TERM xterm

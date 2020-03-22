@@ -1,9 +1,9 @@
-FROM kalilinux/kali-linux-docker
+FROM kalilinux/kali-rolling
 
 MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
 # Kali signatures preventive update
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg && apt-get install wget -y
 RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
 
 # install required packages from Kali repos

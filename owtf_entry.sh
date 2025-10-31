@@ -36,4 +36,4 @@ if [ $# -gt 0 ]; then
 fi
 
 # Run owtf
-python -m owtf
+python3 -m owtf

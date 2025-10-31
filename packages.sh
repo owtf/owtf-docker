@@ -1,7 +1,11 @@
 apt-get install -y  sudo \
                     git \
-                    python-setuptools \
-                    python-pip \
+                    python3 \
+                    python3-setuptools \
+                    python3-pip \
+                    python3-dev \
+                    python3-venv \
+                    python3-wheel \
                     xvfb \
                     xserver-xephyr \
                     libxml2-dev \
@@ -14,7 +18,6 @@ apt-get install -y  sudo \
                     libssl-dev \
                     libz-dev \
                     libffi-dev \
-                    python-dev \
                     postgresql \
                     postgresql-client \
                     postgresql-client-common \

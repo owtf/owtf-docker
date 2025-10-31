@@ -1,4 +1,4 @@
-FROM kalilinux/kali-linux-docker
+FROM kalilinux/kali-rolling
 
 MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
@@ -24,7 +24,10 @@ RUN /bin/bash /usr/bin/optional_tools.sh
 ENV PYCURL_SSL_LIBRARY openssl
 
 #download latest OWTF
-RUN git clone -b master https://github.com/owtf/owtf.git
+ARG OWTF_VERSION=develop
+RUN git clone https://github.com/owtf/owtf.git \
+    && cd owtf \
+    && git checkout ${OWTF_VERSION}
 RUN mkdir -p /owtf/data/tools/restricted
 
 ENV TERM xterm
@@ -33,7 +36,8 @@ ENV SHELL /bin/bash
 WORKDIR /owtf
 
 # core installation
-RUN python setup.py develop
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && python3 -m pip install --no-cache-dir -e .
 
 # expose ports
 EXPOSE 8010 8009 8008

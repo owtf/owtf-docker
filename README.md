@@ -2,6 +2,10 @@
 
 Official Docker image for [OWASP OWTF](http://owtf.org).
 
+This image builds the OWTF `develop` branch by default. You can override the
+`OWTF_VERSION` build argument to pin the image to a different tag or branch if
+needed.
+
 ### Building the image:
 
 *  Install **Docker**.(specific instructions can be found [here](https://docs.docker.com/installation/)).

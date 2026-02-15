@@ -37,8 +37,8 @@ ENV SHELL /bin/bash
 WORKDIR /owtf
 
 # core installation
-RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
-    && python3 -m pip install --no-cache-dir -e .
+RUN python3 -m pip install --no-cache-dir --break-system-packages --upgrade pip setuptools wheel \
+    && python3 -m pip install --no-cache-dir --break-system-packages -e .
 
 # expose ports
 EXPOSE 8010 8009 8008

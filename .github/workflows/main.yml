@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scripts:
+    name: Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate shell script syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          scripts=( *.sh )
+          if [ ${#scripts[@]} -eq 0 ]; then
+            echo "No shell scripts found"
+            exit 0
+          fi
+
+          for script in "${scripts[@]}"; do
+            echo "Checking ${script}"
+            bash -n "${script}"
+          done
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        run: docker build --build-arg OWTF_VERSION=develop -t owtf-docker:ci .

@@ -3,8 +3,9 @@ FROM kalilinux/kali-rolling
 MAINTAINER @viyatb viyat.bhalodia@owasp.org, @alexandrasandulescu alecsandra.sandulescu@gmail.com
 
 # Kali signatures preventive update
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y gnupg
-RUN wget -q -O - archive.kali.org/archive-key.asc | apt-key add
+RUN apt-get update \
+    && apt-get dist-upgrade -y \
+    && apt-get install -y --no-install-recommends ca-certificates gnupg wget kali-archive-keyring
 
 # install required packages from Kali repos
 COPY packages.sh /

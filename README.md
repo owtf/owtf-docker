@@ -1,5 +1,13 @@
 ## OWTF - Offensive Web Testing Framework
 
+
+> [!WARNING]
+> This repository is deprecated and will be archived.
+>
+> Docker development and CI for OWTF now live in `owtf/owtf` under `docker/` and `.github/workflows/main.yml`.
+>
+> Use: https://github.com/owtf/owtf
+
 Official Docker image for [OWASP OWTF](http://owtf.org).
 
 This image builds the OWTF `develop` branch by default. You can override the
